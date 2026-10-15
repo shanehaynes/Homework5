@@ -1,0 +1,6 @@
+# Python 3.13+. Install: python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
+fastmcp>=4.1
+pydantic-ai-slim[openai,mcp]>=2.56
+python-dotenv>=1.0
+fastapi>=0.115
+uvicorn[standard]>=0.30

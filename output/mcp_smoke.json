@@ -1,0 +1,240 @@
+{
+  "run_at": "2026-10-14T16:18:37-04:00",
+  "server": "campus-customs",
+  "transport": "stdio via .mcp.json (fastmcp.Client)",
+  "database": "data/campus_customs_new.db",
+  "tools_listed": [
+    "check_stock",
+    "check_vendor_restock",
+    "pay_bill"
+  ],
+  "tests": [
+    {
+      "prompt": "Tool 1 test: check the stock of shirts.",
+      "tool": "check_stock",
+      "calls": [
+        {
+          "arguments": {
+            "sku": "CC-TEE-WHITE",
+            "size": "S"
+          },
+          "output": {
+            "found": true,
+            "sku": "CC-TEE-WHITE",
+            "name": "Classic Bulldog Tee",
+            "size": "S",
+            "location": "Aisle B",
+            "requested": 1,
+            "on_hand": 0,
+            "can_fill": false,
+            "shortfall": 1,
+            "unit_cost": 8.0,
+            "list_price": 28.0,
+            "order_value_at_list": 28.0
+          }
+        },
+        {
+          "arguments": {
+            "sku": "CC-TEE-WHITE",
+            "size": "M"
+          },
+          "output": {
+            "found": true,
+            "sku": "CC-TEE-WHITE",
+            "name": "Classic Bulldog Tee",
+            "size": "M",
+            "location": "Aisle B",
+            "requested": 1,
+            "on_hand": 5,
+            "can_fill": true,
+            "shortfall": 0,
+            "unit_cost": 8.0,
+            "list_price": 28.0,
+            "order_value_at_list": 28.0
+          }
+        },
+        {
+          "arguments": {
+            "sku": "CC-TEE-WHITE",
+            "size": "L"
+          },
+          "output": {
+            "found": true,
+            "sku": "CC-TEE-WHITE",
+            "name": "Classic Bulldog Tee",
+            "size": "L",
+            "location": "Aisle B",
+            "requested": 1,
+            "on_hand": 3,
+            "can_fill": true,
+            "shortfall": 0,
+            "unit_cost": 8.0,
+            "list_price": 28.0,
+            "order_value_at_list": 28.0
+          }
+        },
+        {
+          "arguments": {
+            "sku": "CC-TEE-WHITE",
+            "size": "XL"
+          },
+          "output": {
+            "found": true,
+            "sku": "CC-TEE-WHITE",
+            "name": "Classic Bulldog Tee",
+            "size": "XL",
+            "location": "Aisle B",
+            "requested": 1,
+            "on_hand": 2,
+            "can_fill": true,
+            "shortfall": 0,
+            "unit_cost": 8.0,
+            "list_price": 28.0,
+            "order_value_at_list": 28.0
+          }
+        }
+      ]
+    },
+    {
+      "prompt": "Tool 2 test: What vendor will ship today?",
+      "tool": "check_vendor_restock",
+      "calls": [
+        {
+          "arguments": {
+            "vendor_id": 1
+          },
+          "output": {
+            "found": true,
+            "vendor_id": 1,
+            "name": "Bulldog Print Co",
+            "specialty": "apparel reprint",
+            "lead_days": 5,
+            "today": "2026-08-31",
+            "will_ship": false,
+            "blocking_invoices": [
+              {
+                "invoice_id": 501,
+                "amount": 840.0,
+                "due_date": "2026-08-28",
+                "overdue": true,
+                "description": "Rush reprint CC-TEE-WHITE S"
+              }
+            ],
+            "amount_to_unblock": 840.0,
+            "eta_if_ordered_today": null,
+            "eta_if_unblocked_today": "2026-09-05"
+          }
+        },
+        {
+          "arguments": {
+            "vendor_id": 2
+          },
+          "output": {
+            "found": true,
+            "vendor_id": 2,
+            "name": "Elm City Gifts",
+            "specialty": "mugs and small goods",
+            "lead_days": 3,
+            "today": "2026-08-31",
+            "will_ship": true,
+            "blocking_invoices": [],
+            "amount_to_unblock": 0,
+            "eta_if_ordered_today": "2026-09-03",
+            "eta_if_unblocked_today": "2026-09-03"
+          }
+        },
+        {
+          "arguments": {
+            "vendor_id": 3
+          },
+          "output": {
+            "found": true,
+            "vendor_id": 3,
+            "name": "QuickShip CT",
+            "specialty": "local courier",
+            "lead_days": 1,
+            "today": "2026-08-31",
+            "will_ship": true,
+            "blocking_invoices": [],
+            "amount_to_unblock": 0,
+            "eta_if_ordered_today": "2026-09-01",
+            "eta_if_unblocked_today": "2026-09-01"
+          }
+        }
+      ]
+    },
+    {
+      "prompt": "Tool 3 test: Try to make a payment for which we have insufficient cash",
+      "tool": "pay_bill",
+      "calls": [
+        {
+          "arguments": {
+            "kind": "invoice",
+            "ref_id": 501,
+            "approved_by": "Shane Haynes"
+          },
+          "output": {
+            "ok": true,
+            "status": "paid",
+            "payment_id": 1,
+            "approved_by": "Shane Haynes",
+            "kind": "invoice",
+            "ref_id": 501,
+            "amount": 840.0,
+            "due_date": "2026-08-28",
+            "overdue": true,
+            "account": "checking",
+            "balance_before": 3400.0,
+            "balance_after": 2560.0,
+            "sufficient_cash": true,
+            "invoice_status": "paid"
+          }
+        },
+        {
+          "arguments": {
+            "kind": "lease",
+            "ref_id": 1,
+            "approved_by": "Shane Haynes"
+          },
+          "output": {
+            "ok": true,
+            "status": "paid",
+            "payment_id": 2,
+            "approved_by": "Shane Haynes",
+            "kind": "lease",
+            "ref_id": 1,
+            "amount": 2400.0,
+            "due_date": "2026-09-02",
+            "overdue": false,
+            "account": "checking",
+            "balance_before": 2560.0,
+            "balance_after": 160.0,
+            "sufficient_cash": true,
+            "lease_next_due": "2026-10-02"
+          }
+        },
+        {
+          "arguments": {
+            "kind": "lease",
+            "ref_id": 1,
+            "approved_by": "Shane Haynes"
+          },
+          "output": {
+            "ok": false,
+            "status": "refused",
+            "error": "insufficient cash",
+            "kind": "lease",
+            "ref_id": 1,
+            "amount": 2400.0,
+            "due_date": "2026-10-02",
+            "overdue": false,
+            "account": "checking",
+            "balance_before": 160.0,
+            "balance_after": -2240.0,
+            "sufficient_cash": false
+          }
+        }
+      ]
+    }
+  ]
+}

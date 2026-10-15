@@ -1,0 +1,138 @@
+{
+  "generated": "2026-10-14",
+  "database": "data/campus_customs_new.db (reset to original books before the runs)",
+  "model": "gpt-6-luna (served as gpt-6-luna-global) via Portkey",
+  "cash": {
+    "start_after_reset": 3400.0,
+    "end": 160.0,
+    "change": -3240.0
+  },
+  "tickets": [
+    {
+      "id": 101,
+      "subject": "Bulldog tee",
+      "requester": "Tauhid Zaman",
+      "final_status": "resolved",
+      "owner": "customer_service",
+      "resolved_by": "Shane Haynes (human, dashboard)",
+      "outcome": "Size S was out and Bulldog Print was blocked by overdue invoice 501. Invoice paid ($840), a 1-unit restock PO placed ($8, ETA 2026-09-05), and an unsent reply draft gives Tauhid the estimated date.",
+      "sessions": [
+        "71871fc8d9",
+        "462419849c",
+        "7705426b19"
+      ],
+      "delegations": [
+        "boss->inventory",
+        "boss->accounting",
+        "boss->customer_service",
+        "boss->inventory",
+        "boss->customer_service"
+      ],
+      "agents": {
+        "boss": "Routed inventory first, then accounting to unblock the vendor, then customer_service with the facts; re-tasked after each human approval.",
+        "inventory": "Confirmed S = 0 and the vendor block; after payment, requested PO 1 for 1 unit (sized to demand).",
+        "accounting": "Verified cash coverage and filed payment approval 1 for invoice 501 ($840).",
+        "customer_service": "Drafted reply 1 (no date), then reply 2 with the 2026-09-05 estimate; no vendor or billing details.",
+        "facilities": "Not called."
+      },
+      "human_approvals": [
+        {
+          "approval_id": 1,
+          "kind": "payment",
+          "amount": 840.0,
+          "requested_by": "accounting",
+          "decision": "approved",
+          "status": "executed",
+          "decided_by": "Shane Haynes",
+          "payment_id": 1,
+          "effect": "Paid invoice 501; checking 3400.00 -> 2560.00"
+        },
+        {
+          "approval_id": 2,
+          "kind": "purchase",
+          "amount": 8.0,
+          "requested_by": "inventory",
+          "decision": "approved",
+          "status": "executed",
+          "decided_by": "Shane Haynes",
+          "payment_id": null,
+          "effect": "Placed PO 1 (1 x CC-TEE-WHITE S, $8.00, ETA 2026-09-05); no cash movement"
+        }
+      ],
+      "human_actions": [
+        "Resolved after reviewing draft 2"
+      ],
+      "cash_change": -840.0
+    },
+    {
+      "id": 102,
+      "subject": "Rent due",
+      "requester": "Elm City Properties",
+      "final_status": "resolved",
+      "owner": "accounting",
+      "resolved_by": "boss (agent), after verifying payment 2",
+      "outcome": "September rent ($2,400, due 2026-09-02) was unpaid after the reset; accounting verified no prior payment and requested approval; paid; boss verified and resolved. Next due 2026-10-02.",
+      "sessions": [
+        "e17e0b6263",
+        "79c4db6ce9"
+      ],
+      "delegations": [
+        "boss->accounting"
+      ],
+      "agents": {
+        "boss": "Sent only accounting; on the second run verified payment 2 itself and resolved the ticket.",
+        "accounting": "Checked payments ledger, lease, preview and cash; alerted boss; filed payment approval 3 ($2,400).",
+        "inventory": "Not called.",
+        "facilities": "Not called.",
+        "customer_service": "Not called."
+      },
+      "human_approvals": [
+        {
+          "approval_id": 3,
+          "kind": "payment",
+          "amount": 2400.0,
+          "requested_by": "accounting",
+          "decision": "approved",
+          "status": "executed",
+          "decided_by": "Shane Haynes",
+          "payment_id": 2,
+          "effect": "Paid lease 1 rent; checking 2560.00 -> 160.00; next_due -> 2026-10-02"
+        }
+      ],
+      "human_actions": [],
+      "missed": "October rent ($2,400 due 2026-10-02 vs $160 cash) was not flagged; 30-day cash horizon ended 2026-09-30.",
+      "cash_change": -2400.0
+    },
+    {
+      "id": 103,
+      "subject": "Bulk hoodie discount",
+      "requester": "Yale AI Club",
+      "final_status": "resolved",
+      "owner": "customer_service",
+      "resolved_by": "Shane Haynes (human, dashboard)",
+      "outcome": "No discount (policy not set). Club offered the 8 size-M hoodies in stock at list ($464) now and the remaining 12 at list after a restock, which cash ($160 vs $264) cannot fund yet. Unsent reply draft 3; no PO, no stock pulled.",
+      "sessions": [
+        "b3da7e0aaf",
+        "f219f9a790"
+      ],
+      "delegations": [
+        "boss->inventory",
+        "boss->accounting",
+        "boss->customer_service"
+      ],
+      "agents": {
+        "boss": "Inventory first, then accounting; parked for human direction; carried out the human's decision via customer_service.",
+        "inventory": "8 on hand, 12 short; restock $264 vs $160 cash (max 7); vendor ETA 2026-09-05; placed no PO by instruction.",
+        "accounting": "Quoted 20 at list ($1,160, 62.1% margin); declined to file a discount approval without a stated percentage.",
+        "customer_service": "Drafted reply 3 per the human direction: no discount, 8 now at $58, 12 later at list, no date promised.",
+        "facilities": "Not called."
+      },
+      "human_approvals": [],
+      "human_actions": [
+        "Direction: no discount for now; offer 8 now at list and 12 later; draft the reply; no PO until confirmed",
+        "Resolved after reviewing draft 3"
+      ],
+      "cash_change": 0.0
+    }
+  ]
+}
