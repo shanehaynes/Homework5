@@ -78,14 +78,14 @@ Every agent step and human action is appended to `output/audit_trail.json`.
 Run the backend for Tenet against separate, git-ignored copies of the books and the audit trail, so the homework evidence stays untouched:
 
 ```bash
-cd backend && CAMPUS_DB_PATH=data/tenet_working.db CAMPUS_AUDIT_PATH=output/tenet_audit_trail.json ../.venv/bin/uvicorn main:app --port 8000
+cd backend && CAMPUS_DB_PATH=data/tenet_working.db CAMPUS_AUDIT_PATH=output/tenet_audit_trail.json CAMPUS_FRESH_MODEL_CALLS=1 ../.venv/bin/uvicorn main:app --port 8000
 ```
 
 ```bash
 curl -s -X POST http://localhost:8000/tenet/ask -H 'content-type: application/json' -d '{"agent": "customer_service", "message": "Do you have navy hoodies in stock?"}'
 ```
 
-The key is read from `.env`, or from `../.env` when the repo has none.
+`CAMPUS_FRESH_MODEL_CALLS=1` asks the gateway for a fresh answer on every model call (Portkey otherwise replays identical requests from its response cache, so a repeated test would replay the earlier answer). The key is read from `.env`, or from `../.env` when the repo has none.
 
 ## Shop rules the system enforces
 1. `desk.date_today` is "today".

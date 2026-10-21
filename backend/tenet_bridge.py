@@ -18,7 +18,10 @@ Each request (with reset) starts from the original books, runs the agent exactly
 trail. Run the backend for Tenet against separate, git-ignored copies so the HW5 evidence stays untouched:
 
     cd backend && CAMPUS_DB_PATH=data/tenet_working.db CAMPUS_AUDIT_PATH=output/tenet_audit_trail.json \
-        ../.venv/bin/uvicorn main:app --port 8000
+        CAMPUS_FRESH_MODEL_CALLS=1 ../.venv/bin/uvicorn main:app --port 8000
+
+CAMPUS_FRESH_MODEL_CALLS=1 asks the gateway for a fresh answer on every model call; without it, Portkey replays
+identical requests from its response cache and a repeated test would replay the earlier answer.
 
 The key is read from .env, or from ../.env when the repo has none (team.py).
 """

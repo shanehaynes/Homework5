@@ -63,6 +63,13 @@ def _portkey_model() -> Model:
     api_key = os.getenv("PORTKEY_API_KEY")
     if not api_key:
         raise RuntimeError(f"PORTKEY_API_KEY is missing from {ROOT / '.env'} (copy .env.example to .env)")
+    if os.getenv("CAMPUS_FRESH_MODEL_CALLS") == "1":
+        # Tenet bridge: Portkey replays identical requests from a response cache, so a repeated test would replay
+        # the earlier answer. Ask for a fresh one on every call.
+        from openai import AsyncOpenAI
+
+        client = AsyncOpenAI(base_url=PORTKEY_BASE_URL, api_key=api_key, default_headers={"x-portkey-cache-force-refresh": "true"})
+        return OpenAIResponsesModel(MODEL_NAME, provider=OpenAIProvider(openai_client=client))
     return OpenAIResponsesModel(MODEL_NAME, provider=OpenAIProvider(base_url=PORTKEY_BASE_URL, api_key=api_key))
 
 
