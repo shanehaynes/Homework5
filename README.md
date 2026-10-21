@@ -73,7 +73,7 @@ Reset is refused while a run is in progress.
 Every agent step and human action is appended to `output/audit_trail.json`.
 
 ## 7. Testing one agent with Tenet (branch `tenet-bridge`)
-[Tenet](https://github.com/shanehaynes/tenet) tests an agent against its written rules. `POST /tenet/ask` runs one agent on one operator request, the same way the board's "ask an agent" does, and returns its report, every tool call it made (from the audit trail) and its token usage. By default each request first restores the original books, so every test starts from the same state; a request that arrives while another is running gets `409 {"error": "busy"}`.
+[Tenet](https://github.com/shanehaynes/tenet) tests an agent against its written rules. `POST /tenet/ask` runs one agent on one operator request, the same way the board's "ask an agent" does, and returns its report, every tool call it made (from the audit trail) and its token usage. By default each request first restores the original books, so every test starts from the same state; a request that arrives while another is running gets `409 {"error": "busy"}`. `GET /tenet/ask` describes that starting state (shop date, cash, open tickets, invoices, catalog, vendors), so Tenet's test requests name records the agents can find.
 
 Run the backend for Tenet against separate, git-ignored copies of the books and the audit trail, so the homework evidence stays untouched:
 
