@@ -2,6 +2,7 @@
 
 import fcntl
 import json
+import os
 import threading
 from datetime import datetime
 from pathlib import Path
@@ -9,7 +10,9 @@ from typing import Any
 
 from backend.models import AgentDeps, AuditEvent
 
-AUDIT_PATH = Path(__file__).resolve().parent.parent / "output" / "audit_trail.json"
+_ROOT = Path(__file__).resolve().parent.parent
+# CAMPUS_AUDIT_PATH (Tenet bridge) sends a test session's events to a separate, git-ignored file.
+AUDIT_PATH = _ROOT / os.getenv("CAMPUS_AUDIT_PATH", "output/audit_trail.json")
 CLIP = 1500  # max characters of any single logged value
 _lock = threading.Lock()
 

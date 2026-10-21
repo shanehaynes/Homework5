@@ -72,6 +72,21 @@ Reset is refused while a run is in progress.
 
 Every agent step and human action is appended to `output/audit_trail.json`.
 
+## 7. Testing one agent with Tenet (branch `tenet-bridge`)
+[Tenet](https://github.com/shanehaynes/tenet) tests an agent against its written rules. `POST /tenet/ask` runs one agent on one operator request, the same way the board's "ask an agent" does, and returns its report, every tool call it made (from the audit trail) and its token usage. By default each request first restores the original books, so every test starts from the same state; a request that arrives while another is running gets `409 {"error": "busy"}`.
+
+Run the backend for Tenet against separate, git-ignored copies of the books and the audit trail, so the homework evidence stays untouched:
+
+```bash
+cd backend && CAMPUS_DB_PATH=data/tenet_working.db CAMPUS_AUDIT_PATH=output/tenet_audit_trail.json ../.venv/bin/uvicorn main:app --port 8000
+```
+
+```bash
+curl -s -X POST http://localhost:8000/tenet/ask -H 'content-type: application/json' -d '{"agent": "customer_service", "message": "Do you have navy hoodies in stock?"}'
+```
+
+The key is read from `.env`, or from `../.env` when the repo has none.
+
 ## Shop rules the system enforces
 1. `desk.date_today` is "today".
 2. Vendor lead times come from `vendors`.

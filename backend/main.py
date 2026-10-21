@@ -8,6 +8,8 @@ direct database access is /reset, which restores the original file wholesale.
 
 import asyncio
 import json
+import os
+import shutil
 import sqlite3
 import sys
 import uuid
@@ -23,10 +25,12 @@ from fastapi import FastAPI, HTTPException, Query  # noqa: E402
 from fastapi.middleware.cors import CORSMiddleware  # noqa: E402
 
 from backend import audit, team  # noqa: E402
+from backend.tenet_bridge import router as tenet_router  # noqa: E402
 from backend.models import AuditEvent, CashBalance, DecisionRequest, RunJob, TicketSummary  # noqa: E402
 
 ORIGINAL_DB = ROOT / "data" / "campus_customs.db"
-WORKING_DB = ROOT / "data" / "campus_customs_new.db"
+# CAMPUS_DB_PATH (Tenet bridge) points the backend and the MCP server at a separate working copy.
+WORKING_DB = ROOT / os.getenv("CAMPUS_DB_PATH", "data/campus_customs_new.db")
 
 jobs: dict[str, RunJob] = {}
 
@@ -53,11 +57,14 @@ def _running() -> list[RunJob]:
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
+    if not WORKING_DB.exists():  # a new CAMPUS_DB_PATH starts as a copy of the original books
+        shutil.copyfile(ORIGINAL_DB, WORKING_DB)
     async with team.mcp_toolset():  # one MCP server process for the API's lifetime
         yield
 
 
 app = FastAPI(title="Campus Customs Desk", lifespan=lifespan)
+app.include_router(tenet_router)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173", "http://127.0.0.1:5173", "http://localhost:3000"],

@@ -39,6 +39,7 @@ from backend.models import AgentDeps, AgentName, AgentReport, AgentSpec, Delegat
 
 ROOT = Path(__file__).resolve().parent.parent
 load_dotenv(ROOT / ".env")
+load_dotenv(ROOT.parent / ".env")  # course convention: the repo folder first, then one level up
 os.environ.setdefault("PYDANTIC_AI_NO_BANNER", "1")
 
 MODEL_NAME = os.getenv("MODEL", "gpt-6-luna")
@@ -77,6 +78,8 @@ def mcp_toolset() -> MCPToolset:
         if (ROOT / server["command"]).exists():
             server["command"] = str(ROOT / server["command"])
         server["args"] = [str(ROOT / a) if (ROOT / a).exists() else a for a in server.get("args", [])]
+        if os.getenv("CAMPUS_DB_PATH"):  # Tenet bridge: run against a separate working copy of the books
+            server.setdefault("env", {})["DB_PATH"] = os.environ["CAMPUS_DB_PATH"]
     return MCPToolset(Client(config), process_tool_call=_process_tool_call)
 
 

@@ -16,3 +16,7 @@ frontend/dist/
 .claude/
 .DS_Store
 output/board/
+
+# Tenet bridge test sessions (separate books and audit trail)
+data/tenet_*.db
+output/tenet_*.json
